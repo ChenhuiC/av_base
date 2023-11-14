@@ -1,7 +1,7 @@
 
 # 采集音频
 1. 命令方式
-ffmpeg -f alsa -i hw:1,0 try.wav
+ffmpeg -f alsa -i hw:0,0 try.wav
 
 2. 代码方式
 默认采集率 44100 通道数 2  采样大小16bit
@@ -35,3 +35,23 @@ amixer cset numid=20,iface=MIXER,name='Capture Volume' 13
 
 # 参考
 ## 重采样参考：https://blog.csdn.net/wanggao_1990/article/details/115731502
+
+
+# 音频处理流程
+
+1. 采集音频
+    流程
+    1. 打开输入设备
+        输入设备名称：
+
+    2. 数据包
+    3. 输出文件（如果无后续操作的话）
+
+2. 重采样
+
+3. 编码
+
+4. 本地存储/传输
+
+
+

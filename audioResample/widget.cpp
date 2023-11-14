@@ -23,11 +23,14 @@ void Widget::on_btnStart_clicked()
     if(recStatue){
         ui->btnStart->setText("停止录制");
         /* 创建录制线程 */
+        set_status(REC_START);
         recThread->start();
     }else{
         ui->btnStart->setText("开始录制");
         set_status(REC_STOP);
     }
+    qDebug() << "main thread ID: " << QThread::currentThreadId();
+
 //    rec_audio();
 }
 
@@ -38,5 +41,6 @@ RecThread::RecThread(QObject *parent)
 
 void RecThread::run()
 {
+    qDebug() << "current thread ID: " << QThread::currentThreadId();
     rec_audio();
 }
