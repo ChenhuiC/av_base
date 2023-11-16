@@ -161,6 +161,12 @@ static AVFrame* createFrame(int nb_samples,enum AVSampleFormat sfmt,uint64_t cha
     return frame;
 }
 
+static void read_data_and_encode(AVFormatContext *fmt_ctx, AVCodecContext *c_ctx, SwrContext *swr_ctx,FILE *outfile)
+{
+
+    return;
+}
+
 /**
  * @brief 录制音频
  * 

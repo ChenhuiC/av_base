@@ -1,7 +1,9 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include <QDebug>
-#include "arecord.h"
+// #include "arecord.h"
+#include "videotest.h"
+
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -42,5 +44,6 @@ RecThread::RecThread(QObject *parent)
 void RecThread::run()
 {
     qDebug() << "current thread ID: " << QThread::currentThreadId();
-    rec_audio();
+    // rec_audio();
+    rec_video();
 }

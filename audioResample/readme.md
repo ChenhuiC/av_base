@@ -55,3 +55,10 @@ amixer cset numid=20,iface=MIXER,name='Capture Volume' 13
 
 
 
+# 视频
+
+## 视频录制
+
+播放测试：
+ffplay -pixel_format nv12  -video_size 640x480 video.yuv
+
