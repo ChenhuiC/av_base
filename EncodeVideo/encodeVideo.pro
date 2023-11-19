@@ -17,11 +17,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    videotest.c \
+    rec_video.c \
     widget.cpp
 
 HEADERS += \
-    videotest.h \
+    rec_video.h \
     widget.h
 
 FORMS += \
