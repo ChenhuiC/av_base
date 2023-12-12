@@ -94,7 +94,7 @@ static int open_encoder(int width,int heigh,AVCodecContext **enc_ctx)
     // 设置输入YUV格式
     (*enc_ctx)->pix_fmt = AV_PIX_FMT_YUV420P;
     // 设置码率
-    (*enc_ctx)->bit_rate = 1000000;      // 600kbps
+    (*enc_ctx)->bit_rate = 600000;      // 600kbps
     // 设置帧率
     (*enc_ctx)->time_base = (AVRational){1,25};        //帧与帧之间的间隔是time_base
     (*enc_ctx)->framerate = (AVRational){25,1};     // 帧率， 每秒 25 帧
@@ -149,7 +149,7 @@ static void encode(AVCodecContext *enc_ctx,AVFrame *frame,AVPacket *newpkt,FILE 
         exit(-1);
     }
 
-    while (ret > 0)
+    while (ret >= 0)
     {
         /*2.获取编码后的数据*/
         ret = avcodec_receive_packet(enc_ctx,newpkt);
@@ -182,9 +182,9 @@ void rec_video(void)
     }
 
     rec_status = 1;
-    // char *out = "video.h264";
-    char *out = "video.yuv";
-    FILE *outfile = fopen(out, "wb+");
+    char *out = "video.h264";
+    // char *out = "video.yuv";
+    FILE *outfile = fopen(out, "wb+");  // b:二进制文件 w+ 以可读、可写方式打开文件，如果参数 path 指定的文件存在，将文件长度截断为 0；如果指定文件不存在则创建该文件
 
     AVCodecContext *enc_ctx = NULL;
     ret = open_encoder(VIDEO_WIDTH,VIDEO_HEIGHT,&enc_ctx);
@@ -248,21 +248,19 @@ void rec_video(void)
                 frame->data[2][(i*VIDEO_WIDTH)/4+j] = vbuff[i*VIDEO_WIDTH/2 + j];
             }
         }
-
-        fwrite(frame->data[0],1,VIDEO_WIDTH*VIDEO_HEIGHT,outfile);
-        fwrite(frame->data[1],1,VIDEO_WIDTH*VIDEO_HEIGHT/4,outfile);
-        fwrite(frame->data[2],1,VIDEO_WIDTH*VIDEO_HEIGHT/4,outfile);
-        fflush(outfile);
+        // fwrite(frame->data[0],1,VIDEO_WIDTH*VIDEO_HEIGHT,outfile);
+        // fwrite(frame->data[1],1,VIDEO_WIDTH*VIDEO_HEIGHT/4,outfile);
+        // fwrite(frame->data[2],1,VIDEO_WIDTH*VIDEO_HEIGHT/4,outfile);
+        // fflush(outfile);
         #endif
         
+        frame->pts = base++;
+        encode(enc_ctx,frame,newpkt,outfile);   /* 进行编码 */
 
-        // frame->pts = base++;
-        // encode(enc_ctx,frame,newpkt,outfile);
-        // avcodec_send_frame();
-        // avcodec_receive_packet();
-        // av_packet_unref(&pkt);
+
+        av_packet_unref(&pkt);
     }
-    // encode(enc_ctx,NULL,newpkt,outfile);
+    encode(enc_ctx,NULL,newpkt,outfile);
 
     av_log(NULL,AV_LOG_DEBUG,"rec_video end!\n");
     fclose(outfile);
