@@ -117,7 +117,7 @@ void encode(AVCodecContext *ctx, AVFrame *frame, AVPacket *pkt, FILE *outfile)
 static AVFormatContext* open_dev()
 {
     AVFormatContext *fmt_ctx = NULL;
-    const char *devicename = "hw:0,0";
+    const char *devicename = "hw:0,0";      // ffmpeg在linux中设备的写法
     AVDictionary *options = NULL;
     AVInputFormat *iformat = NULL;
     int ret;
@@ -125,7 +125,7 @@ static AVFormatContext* open_dev()
 
     /*1.打开输入设备*/
     /* 1.1. 注册音频设备 */
-    avdevice_register_all();
+    avdevice_register_all();        // 现在已经不需要这个了
 
     /* 1.2. 设置采集方式 (avfoundation/dshow/alsa,分别对应mac/window/linux)*/
     iformat = av_find_input_format("alsa");
